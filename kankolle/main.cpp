@@ -2,6 +2,8 @@
 #include<cstring>
 #include<string>
 #include<fstream>
+#include<vector>
+#include "ensei.h"
 
 using namespace std;
 
@@ -11,8 +13,10 @@ int console();
 void kenzouRecipe();
 void kenzouTime();
 void parse(char *line,int &now, char *type, char *kanmusu);
+void getEnseiSearch();
 
 int main(){
+  bool enseiload = false;
   
   while(true){
     int c = console();
@@ -21,6 +25,10 @@ int main(){
       break;
     case 1:
       kenzouRecipe();
+      break;
+    case 2:
+      if(!enseiload)loadEnsei();
+      getEnseiSearch();
       break;
     case 6:
       kenzouTime();
@@ -35,7 +43,7 @@ int main(){
 int console(){
 
   string console_line[] = {"建造レシピ (ken)",
-			   "遠征について (en)",
+			   "遠征について (ensei)",
 			   "改造レベル (kai)",
 			   "艦載機 (kan)",
 			   "出撃関連 (syu)",
@@ -54,7 +62,7 @@ int console(){
     return 1;
   }
 
-  if(strcmp(comm,"en") == 0){
+  if(strcmp(comm,"ensei") == 0){
     delete [] comm;
     return 2;
   }
@@ -128,4 +136,35 @@ void parse(char *line,int &now, char *type, char *kanmusu){
   piece = strtok(NULL,",");
   strcpy(kanmusu,piece);
   return;
+}
+
+void getEnseiSearch(){
+
+  char comm_c;
+  bool q = false;
+  
+  cin >> comm_c;
+  char *query_str, *piece;
+  vector<int> query;
+  switch(comm_c){
+    
+  case 's':
+    cin.ignore();
+    query_str = new char[MAXLENGTH];
+    cin.getline(query_str,MAXLENGTH);
+    cout <<"=============";
+    piece = strtok(query_str," ");
+    while(piece != NULL){
+      string q_int(piece);
+      query.push_back(stoi(q_int));
+      piece = strtok(NULL," ");
+    }
+    for(int i = 0; i < query.size();i++) getEnseiInfo(query[i]);
+    cout <<"=============\n";
+    break;
+    
+  default:
+    q = true;
+    break;
+  }
 }
