@@ -1,0 +1,32 @@
+#include <iostream>
+using namespace std;
+
+const int MAXLENGTH = 1024;
+void parse(char *line, char *niceone,char *anotherone);
+
+int main(){
+  int i = 0;
+  while(true){
+    cout <<i++<<endl;
+    char *line = new char[MAXLENGTH];
+    strcpy(line,"640,装甲空母,大鳳（大型艦建造のみ）");
+    char *niceone = new char[56];
+    char *anotherone = new char[56];
+    parse(line,niceone,anotherone);
+    delete []line;
+    delete []niceone;
+    delete []anotherone;
+  }
+  return 0;
+}
+
+void parse(char *line, char *niceone,char *another){
+  char *piece = strtok(line,",");
+  piece = strtok(NULL,",");
+  strcpy(niceone,piece);
+
+  piece = strtok(NULL,",");
+  strcpy(another,piece);
+
+  return;
+}
